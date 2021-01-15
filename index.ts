@@ -31,8 +31,12 @@ const operatorName = "pairwise";
 const blurb =
   "Pairwise groups pairs of consecutive emissions together and emits them as an array of two values. The observable only emits after the base observable emits twice or more. If you are unsure if your base observable will emit more than once, you can use 'startWith' in conjunction with 'pairwise' to have a default beginning value so the first emission of the base observable makes it through";
 
-const source$ = of(1).pipe(
+const sourceWithDefault$ = of(1).pipe(
   startWith(0),
+  pairwise()
+);
+
+const sourceWithChanges$ = of("hello", "hi", "hi there", "Hello World").pipe(
   pairwise()
 );
 
@@ -50,5 +54,12 @@ console.log(`3. Is the 'pairwise' operator affected differently by hot/cold obse
 console.log(`4. In a chain of operators, how does placement of 'pairwise' matter? \n\n
   Answer: It should be placed after you operate on the current value of the base emission because it changes the shape of the values moving forward into an array. If you are wanting to operate on both the current and previous values, those operations should take place after 'pairwise'`);
 
-console.log("OUTPUT:");
-source$.subscribe(x => console.log(x));
+console.log("OUTPUTS:");
+console.log("\n\nExample of source with one emission and default value:");
+sourceWithDefault$.subscribe(x => console.log(x));
+
+console.log("\n\nExample of pairing changes on emission:");
+sourceWithChanges$.subscribe(x => {
+  console.log("--paired", x);
+  console.log(`----Changed from "${x[0]}" to "${x[1]}"`);
+});
