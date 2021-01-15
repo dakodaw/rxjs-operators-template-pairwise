@@ -29,7 +29,7 @@ const operatorName = "pairwise";
  * What does the operator do?
  */
 const blurb =
-  "Pairwise groups pairs of consecutive emissions together and emits them as an array of two values. The observable only emits after the base observable emits twice or more.";
+  "Pairwise groups pairs of consecutive emissions together and emits them as an array of two values. The observable only emits after the base observable emits twice or more. You can use startWith in conjunction with pairwise to have a default beginning value so the first emission of the base observable makes it through";
 
 const source$ = of(1, 2, 3).pipe(pairwise());
 
